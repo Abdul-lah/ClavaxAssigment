@@ -1,0 +1,80 @@
+﻿@model EmployeeViewModel
+    <h2></h2>
+    <p></p>
+    <input id="myInput" type="text" placeholder="Search Employee..">
+    <br><br>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Id</th>
+                <th>Name</th>
+                <th>DOB</th>
+                <th>GENDER</th>
+                <th>Address</th>
+                <th>State</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="empTable">
+            @foreach (var item in Model.Employee)
+            {
+                <tr>
+                    <td>@item.EmployeeId</td>
+                    <td>@item.EmployeeName</td>
+                    <td>@item.EmployeeDob.ToShortDateString()</td>
+                    <td>@item.Gender</td>
+                    <td>@item.Address</td>
+                    <td>@item.State</td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditEmployee", new { id = item.Id }) |
+                      <a  onclick="deleteEmployee(@item.Id)">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <th>
+        <h3>Current Page:- @Model.CurrentPageIndex</h3>
+    </th>
+    <td>
+        @for (int i = 1; i <= Model.PageCount; i++)
+        {
+            <a asp-action="GetEmployees" asp-route-id=@i>@i</a>
+
+        }
+
+    </td>
+    <th></th>
+    <script>
+        $(document).ready(function () {
+            $("#myInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#empTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+
+        function deleteEmployee(id){
+            if (confirm('Are you sure you want to delete this employee?')) {
+                $.ajax({
+           data: { "Id": id },
+        url: "@Url.Action("DeleteEmployee", "Home")",
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    success: function (response) {
+                        alert(response);
+                        location.reload();
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                }); 
+                
+            } else {
+                // Do nothing!
+               
+            }
+        }
+    </script>

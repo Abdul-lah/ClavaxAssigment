@@ -1,0 +1,87 @@
+﻿@model Clavax.Models.EmployeeModel
+
+@{
+    ViewData["Title"] = "EditEmployee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edi tEmployee</h2>
+@if (ViewBag.result != null)
+{
+    @if (ViewBag.result.Succsefully)
+    {
+        <h1 style="color:green">@ViewBag.result.Message</h1>
+    }
+    else
+    {
+        <h1 style="color:red">@ViewBag.result.Message</h1>
+    }
+}
+<hr />
+<div class="row">
+
+    <form asp-action="EditEmployee">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+
+            <input asp-for="Id" type="hidden" class="form-control" />
+
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="EmployeeId" class="control-label"></label>
+                <input asp-for="EmployeeId" class="form-control" />
+                <span asp-validation-for="EmployeeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EmployeeName" class="control-label"></label>
+                <input asp-for="EmployeeName" class="form-control" />
+                <span asp-validation-for="EmployeeName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="EmployeeDob" class="control-label"></label>
+                <input asp-for="EmployeeDob" class="form-control" />
+                <span asp-validation-for="EmployeeDob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Gender" class="control-label"></label>
+
+                <label>MALE</label>
+                <input asp-for="Gender" type="radio" value="MALE" class="form-control" />
+                <label>FEMALE</label>
+                <input asp-for="Gender" type="radio" value="FEMALE" class="form-control" />
+                <span asp-validation-for="Gender" class="text-danger"></span>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <select class="form-control "  asp-for="State" asp-items="@(new SelectList(@ViewBag.States,"Id","State"))">
+                    <option value="nill">nill</option>
+ 
+
+                </select>
+                @*<input asp-for="State" class="form-control" />*@
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="save" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+
+
+<hr />
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
